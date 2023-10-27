@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Home.css'
 
 function Home() {
   const [doubts, setDoubts] = useState([]);
@@ -58,12 +59,11 @@ function Home() {
 
   return (
     <div className="Home">
-      <h1>Your Home Title</h1>
+      <h1>Doubts</h1>
 
       {/* Doubts Form */}
       <form onSubmit={handleDoubtSubmit}>
         <label>
-          Doubt:
           <input
             type="text"
             value={newDoubt.doubt}
@@ -88,6 +88,8 @@ function Home() {
           </li>
         ))}
       </ul>
+
+      <h1>Teams</h1>
 
       {/* Teams Form */}
       <form onSubmit={handleTeamSubmit}>
@@ -121,6 +123,8 @@ function Home() {
           </li>
         ))}
       </ul>
+
+      <h1>Volunteers</h1>
 
       {/* Volunteers Form */}
       <form onSubmit={handleVolunteerSubmit}>
