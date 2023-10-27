@@ -1,0 +1,129 @@
+/* Reset some default styles and set a background color */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  /* Header styling */
+  header {
+    background-color: #0073b1;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  /* Navigation bar styling */
+  nav {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  nav li {
+    margin: 0 15px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #0073b1;
+    font-weight: bold;
+  }
+  
+  /* Main content area */
+  .container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Profile section */
+  .profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #0073b1;
+    color: #fff;
+    text-align: center;
+    line-height: 150px;
+    font-size: 60px;
+  }
+  
+  .profile-info {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .profile-name {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .profile-headline {
+    color: #0073b1;
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  /* Connections and Posts section */
+  .connections-and-posts {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .connections {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .posts {
+    flex: 2;
+    padding: 20px;
+  }
+  
+  /* Footer styling */
+  footer {
+    background-color: #0073b1;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  /* Responsive design - adjust layout for smaller screens */
+  @media (max-width: 768px) {
+    .profile {
+      flex-direction: column;
+    }
+  
+    .profile-info {
+      padding: 20px 0;
+    }
+  
+    .connections-and-posts {
+      flex-direction: column;
+    }
+  
+    .connections,
+    .posts {
+      padding: 20px 0;
+    }
+  }
+  
