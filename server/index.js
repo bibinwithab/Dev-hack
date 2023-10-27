@@ -31,7 +31,7 @@ const teamSchema = new mongoose.Schema({
     title:String,
     description:String,
     comment:{
-        type:String,
+        type:[String],
         default: []
     }
 })
@@ -40,7 +40,7 @@ const volunteerSchema = new mongoose.Schema({
     title:String,
     description:String,
     comment:{
-        type:String,
+        type:[String],
         default: []
     }
 })

@@ -1,231 +1,161 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function App() {
-  const [userData, setUserData] = useState([]);
-  const [newUserData, setNewUserData] = useState({
-    name: '',
-    email: '',
-    passingYear: '',
-    department: '',
-    bio: '',
-  });
-
-  const [doubtData, setDoubtData] = useState([]);
-  const [newDoubtData, setNewDoubtData] = useState({ doubt: '', answer: [] });
-
-  const [teamData, setTeamData] = useState([]);
-  const [newTeamData, setNewTeamData] = useState({
-    title: '',
-    description: '',
-    comment: [],
-  });
-
-  const [volunteerData, setVolunteerData] = useState([]);
-  const [newVolunteerData, setNewVolunteerData] = useState({
-    title: '',
-    description: '',
-    comment: [],
-  });
+function Home() {
+  const [doubts, setDoubts] = useState([]);
+  const [newDoubt, setNewDoubt] = useState({ doubt: '', answer: [] });
+  const [teams, setTeams] = useState([]);
+  const [newTeam, setNewTeam] = useState({ title: '', description: '', comment: [] });
+  const [volunteers, setVolunteers] = useState([]);
+  const [newVolunteer, setNewVolunteer] = useState({ title: '', description: '', comment: [] });
 
   useEffect(() => {
-    // Fetch data from your Express.js API endpoints for each data type
-    const fetchData = async () => {
-      try {
-        const userDataResponse = await axios.get('http://localhost:8000/data');
-        const doubtDataResponse = await axios.get('http://localhost:8000/doubts');
-        const teamDataResponse = await axios.get('http://localhost:8000/team');
-        const volunteerDataResponse = await axios.get('http://localhost:8000/volunteer');
+    // Fetch doubts
+    axios.get('http://localhost:8000/doubts')
+      .then(response => setDoubts(response.data))
+      .catch(error => console.error('Error fetching doubts:', error));
 
-        setUserData(userDataResponse.data);
-        setDoubtData(doubtDataResponse.data);
-        setTeamData(teamDataResponse.data);
-        setVolunteerData(volunteerDataResponse.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    // Fetch teams
+    axios.get('http://localhost:8000/team')
+      .then(response => setTeams(response.data))
+      .catch(error => console.error('Error fetching teams:', error));
 
-    fetchData();
+    // Fetch volunteers
+    axios.get('http://localhost:8000/volunteer')
+      .then(response => setVolunteers(response.data))
+      .catch(error => console.error('Error fetching volunteers:', error));
   }, []);
 
-  const handleCreateUserData = async () => {
-    try {
-      await axios.post('http://localhost:8000/data', newUserData);
-      setUserData([...userData, newUserData]);
-      setNewUserData({
-        name: '',
-        email: '',
-        passingYear: '',
-        department: '',
-        bio: '',
-      });
-    } catch (error) {
-      console.error('Error creating user data:', error);
-    }
+  const handleDoubtSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/doubts', newDoubt)
+      .then(response => {
+        setDoubts([...doubts, response.data]);
+        setNewDoubt({ doubt: '', answer: [] });
+      })
+      .catch(error => console.error('Error creating new doubt:', error));
   };
 
-  const handleCreateDoubtData = async () => {
-    try {
-      await axios.post('http://localhost:8000/doubts', newDoubtData);
-      setDoubtData([...doubtData, newDoubtData]);
-      setNewDoubtData({ doubt: '', answer: [] });
-    } catch (error) {
-      console.error('Error creating doubt data:', error);
-    }
+  const handleTeamSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/team', newTeam)
+      .then(response => {
+        setTeams([...teams, response.data]);
+        setNewTeam({ title: '', description: '', comment: [] });
+      })
+      .catch(error => console.error('Error creating new team:', error));
   };
 
-  const handleCreateTeamData = async () => {
-    try {
-      await axios.post('http://localhost:8000/team', newTeamData);
-      setTeamData([...teamData, newTeamData]);
-      setNewTeamData({ title: '', description: '', comment: [] });
-    } catch (error) {
-      console.error('Error creating team data:', error);
-    }
+  const handleVolunteerSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8000/volunteer', newVolunteer)
+      .then(response => {
+        setVolunteers([...volunteers, response.data]);
+        setNewVolunteer({ title: '', description: '', comment: [] });
+      })
+      .catch(error => console.error('Error creating new volunteer:', error));
   };
 
-  const handleCreateVolunteerData = async () => {
-    try {
-      await axios.post('http://localhost:8000/volunteer', newVolunteerData);
-      setVolunteerData([...volunteerData, newVolunteerData]);
-      setNewVolunteerData({ title: '', description: '', comment: [] });
-    } catch (error) {
-      console.error('Error creating volunteer data:', error);
-    }
-  };
+  return (
+    <div className="Home">
+      <h1>Your Home Title</h1>
 
-  return (<>
-    <div className="App">
-      <h1>Your React App</h1>
-
-      <h2>User Data</h2>
-      <ul>
-        {userData.map((user) => (
-          <li key={user._id}>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-            {/* Add more user data fields */}
-          </li>
-        ))}
-      </ul>
-
-      <form>
-        <input
-          type="text"
-          placeholder="Name"
-          value={newUserData.name}
-          onChange={(e) => setNewUserData({ ...newUserData, name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={newUserData.email}
-          onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
-        />
-        {/* Add input fields for other user data fields */}
-        <button type="button" onClick={handleCreateUserData}>
-          Create User Data
-        </button>
+      {/* Doubts Form */}
+      <form onSubmit={handleDoubtSubmit}>
+        <label>
+          Doubt:
+          <input
+            type="text"
+            value={newDoubt.doubt}
+            onChange={(e) => setNewDoubt({ ...newDoubt, doubt: e.target.value })}
+            required
+          />
+        </label>
+        <button type="submit">Submit Doubt</button>
       </form>
 
-      <h2>Doubt Data</h2>
+      {/* Display Doubts */}
       <ul>
-        {doubtData.map((doubt) => (
+        {doubts.map(doubt => (
           <li key={doubt._id}>
-            <p>Doubt: {doubt.doubt}</p>
+            <p>{doubt.doubt}</p>
+            {/* Display answers for this doubt */}
             <ul>
               {doubt.answer.map((answer, index) => (
-                <li key={index}>Answer: {answer}</li>
-              )}
+                <li key={index}>{answer}</li>
+              ))}
             </ul>
           </li>
         ))}
       </ul>
 
-      <form>
-        <input
-          type="text"
-          placeholder="Doubt"
-          value={newDoubtData.doubt}
-          onChange={(e) => setNewDoubtData({ ...newDoubtData, doubt: e.target.value })}
-        />
-        {/* Add input fields for answers */}
-        <button type="button" onClick={handleCreateDoubtData}>
-          Create Doubt Data
-        </button>
+      {/* Teams Form */}
+      <form onSubmit={handleTeamSubmit}>
+        <label>
+          Title:
+          <input
+            type="text"
+            value={newTeam.title}
+            onChange={(e) => setNewTeam({ ...newTeam, title: e.target.value })}
+            required
+          />
+        </label>
+        <label>
+          Description:
+          <input
+            type="text"
+            value={newTeam.description}
+            onChange={(e) => setNewTeam({ ...newTeam, description: e.target.value })}
+            required
+          />
+        </label>
+        <button type="submit">Submit Team</button>
       </form>
 
-      <h2>Team Data</h2>
+      {/* Display Teams */}
       <ul>
-        {teamData.map((team) => (
+        {teams.map(team => (
           <li key={team._id}>
-            <p>Title: {team.title}</p>
-            <p>Description: {team.description}</p>
-            <ul>
-              {team.comment.map((comment, index) => (
-                <li key={index}>Comment: {comment}</li>
-              )}
-            </ul>
+            <h2>{team.title}</h2>
+            <p>{team.description}</p>
           </li>
         ))}
       </ul>
 
-      <form>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newTeamData.title}
-          onChange={(e) => setNewTeamData({ ...newTeamData, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={newTeamData.description}
-          onChange={(e) => setNewTeamData({ ...newTeamData, description: e.target.value })}
-        />
-        {/* Add input fields for comments */}
-        <button type="button" onClick={handleCreateTeamData}>
-          Create Team Data
-        </button>
+      {/* Volunteers Form */}
+      <form onSubmit={handleVolunteerSubmit}>
+        <label>
+          Title:
+          <input
+            type="text"
+            value={newVolunteer.title}
+            onChange={(e) => setNewVolunteer({ ...newVolunteer, title: e.target.value })}
+            required
+          />
+        </label>
+        <label>
+          Description:
+          <input
+            type="text"
+            value={newVolunteer.description}
+            onChange={(e) => setNewVolunteer({ ...newVolunteer, description: e.target.value })}
+            required
+          />
+        </label>
+        <button type="submit">Submit Volunteer</button>
       </form>
 
-      <h2>Volunteer Data</h2>
+      {/* Display Volunteers */}
       <ul>
-        {volunteerData.map((volunteer) => (
+        {volunteers.map(volunteer => (
           <li key={volunteer._id}>
-            <p>Title: {volunteer.title}</p>
-            <p>Description: {volunteer.description}</p>
-            <ul>
-              {volunteer.comment.map((comment, index) => (
-                <li key={index}>Comment: {comment}</li>
-              )}
-            </ul>
+            <h2>{volunteer.title}</h2>
+            <p>{volunteer.description}</p>
           </li>
         ))}
       </ul>
-
-      <form>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newVolunteerData.title}
-          onChange={(e) => setNewVolunteerData({ ...newVolunteerData, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={newVolunteerData.description}
-          onChange={(e) => setNewVolunteerData({ ...newVolunteerData, description: e.target.value })}
-        />
-        {/* Add input fields for comments */}
-        <button type="button" onClick={handleCreateVolunteerData}>
-          Create Volunteer Data
-        </button>
-      </form>
     </div>
-    </>
   );
 }
 
-export default App;
+export default Home;
